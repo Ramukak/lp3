@@ -1,0 +1,52 @@
+import heapq
+
+class node:
+    def __init__(self,freq,data,left=None,right=None):
+        self.freq = freq
+        self.data = data
+        self.left = left
+        self.right = right
+        self.huff=''
+    def __lt__(self,nxt):
+        return self.freq<nxt.freq
+    
+def printNodes(node,val=''):
+    newval=val+str(node.huff)
+    if node.left:
+        printNodes(node.left,newval)
+    if node.right:
+        printNodes(node.right,newval)
+
+    if not node.left and not node.right:
+        print(f"{node.data}  -> {newval}")
+
+
+def HuffmanCoding(chars,freq,nodes):
+    
+    for i in range(len(chars)):
+        heapq.heappush(nodes,node(freq[i],chars[i]))
+
+    while(len(nodes)>1):
+        left = heapq.heappop(nodes)
+        right = heapq.heappop(nodes)
+
+        left.huff='0'
+        right.huff='1'
+
+        newnode = node(left.freq+right.freq,left.data+right.data,left,right)
+
+        heapq.heappush(nodes,newnode)
+
+    return nodes[0]
+
+def main():
+    chars = ['a', 'b', 'c', 'd', 'e', 'f']
+    freq = [ 5, 9, 12, 13, 16, 45]
+    nodes=[]
+    huffmanTree = HuffmanCoding(chars,freq,nodes)
+    printNodes(huffmanTree)
+main()
+
+    
+
+        
