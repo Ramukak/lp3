@@ -1,0 +1,30 @@
+class Item:
+    def __init__(self,value,weight):
+        self.value = value
+        self.weight = weight
+
+def fractionalKnapsack(items,capacity):
+    items.sort(key = lambda item:item.value/item.weight,reverse = True)
+    total_value = 0
+    selected_items = []
+
+    for item in items:
+        if capacity<=0:
+            break
+        if item.weight <= capacity:
+            total_value+=item.value
+            capacity-=item.weight
+            selected_items.append(item)
+        else:
+            fraction = capacity/item.weight;
+            total_value+=item.value*fraction
+            capacity=0
+            selected_items.append(Item(item.value*fraction,item.weight*fraction))
+    return total_value,selected_items
+
+items = [Item(60, 10), Item(100, 20), Item(120, 30)]
+capacity = 50
+max_value,selected_items = fractionalKnapsack(items,capacity)
+print("Max Value: ",max_value,"\nSelected Items")
+for item in selected_items:
+    print(f"{item.weight} -> {item.value}")
